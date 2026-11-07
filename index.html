@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghost Love Experience</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #080609;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* LANDING PAGE */
+.landing {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    background: #080609;
+    transition: opacity 1.5s ease, visibility 1.5s ease;
+}
+
+.landing.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.landing video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.48);
+}
+
+.landing::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.25),
+        rgba(0,0,0,0.75)
+    );
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+    padding: 25px;
+}
+
+.welcome-content h1 {
+    font-size: clamp(30px, 7vw, 55px);
+    color: #f4d6a0;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+    text-shadow: 0 0 20px rgba(255,190,120,0.4);
+}
+
+.welcome-content p {
+    color: #eee0d2;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 35px;
+}
+
+.welcome-btn {
+    padding: 16px 30px;
+    border: 1px solid #e5bd83;
+    background: rgba(255,255,255,0.08);
+    color: #ffe4b8;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    transition: 0.4s;
+}
+
+.welcome-btn:hover {
+    background: #d8a86d;
+    color: #160d0b;
+    box-shadow: 0 0 25px rgba(216,168,109,0.5);
+}
+
+/* MAIN PAGE */
+.main-page {
+    min-height: 100vh;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 35px 18px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.5s ease;
+}
+
+.main-page.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* FULL SCREEN SLIDESHOW */
+.background-slideshow {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+    background: #080609;
+}
+
+.background-slideshow img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.38);
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+.background-slideshow img.active {
+    opacity: 1;
+}
+
+.background-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+        135deg,
+        rgba(15,5,12,0.55),
+        rgba(0,0,0,0.65)
+    );
+    pointer-events: none;
+}
+
+/* LOVE LETTER */
+.love-card {
+    width: 100%;
+    max-width: 650px;
+    padding: 35px 25px;
+    text-align: center;
+    border: 1px solid rgba(255,220,190,0.25);
+    border-radius: 22px;
+    background: rgba(20,12,18,0.48);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.love-card h2 {
+    color: #f4d6a0;
+    font-size: clamp(25px, 6vw, 38px);
+    margin-bottom: 28px;
+    letter-spacing: 2px;
+}
+
+.letter-line {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    margin-bottom: 17px;
+    color: #f5e9e4;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.letter-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.final-heart {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: 1.5s ease;
+    color: #e9b4c8;
+    font-size: 40px;
+    margin: 12px 0;
+}
+
+.final-heart.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.signature {
+    margin-top: 30px;
+    color: #e5bd83;
+    font-size: 12px;
+    letter-spacing: 3px;
+    line-height: 2;
+}
+
+.music-btn {
+    margin-top: 25px;
+    padding: 11px 22px;
+    border: 1px solid rgba(229,189,131,0.7);
+    border-radius: 25px;
+    background: rgba(255,255,255,0.06);
+    color: #f5d7ad;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.music-btn:hover {
+    background: rgba(229,189,131,0.2);
+}
+
+@media (max-width: 480px) {
+    .love-card {
+        padding: 28px 19px;
+    }
+
+    .letter-line {
+        font-size: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LANDING SCREEN -->
+<section class="landing" id="landing">
+
+    <video autoplay muted loop playsinline>
+        <source src="her-video.mp4" type="video/mp4">
+        Your browser does not support this video.
+    </video>
+
+    <div class="welcome-content">
+        <h1>For Someone Special</h1>
+        <p>A little surprise awaits you...</p>
+
+        <button class="welcome-btn" id="welcomeBtn">
+            WELCOME MY LOVE ♡
+        </button>
+    </div>
+
+</section>
+
+
+<!-- MAIN EXPERIENCE -->
+<main class="main-page" id="mainPage">
+
+    <!-- BACKGROUND PHOTOS -->
+    <div class="background-slideshow">
+        <img src="photo1.jpg" class="active" alt="Memory 1">
+        <img src="photo2.jpg" alt="Memory 2">
+        <img src="photo3.jpg" alt="Memory 3">
+        <img src="photo4.jpg" alt="Memory 4">
+    </div>
+
+    <div class="background-overlay"></div>
+
+    <!-- LETTER -->
+    <div class="love-card">
+
+        <h2>A Little Letter For You ♡</h2>
+
+        <p class="letter-line">
+            Sometimes, the simplest moments become the most beautiful memories.
+        </p>
+
+        <p class="letter-line">
+            I hope you know how special your presence can make an ordinary day.
+        </p>
+
+        <p class="letter-line">
+            Your smile, your energy, and the little things that make you YOU...
+        </p>
+
+        <p class="letter-line">
+            They deserve to be appreciated.
+        </p>
+
+        <p class="letter-line">
+            So whenever life gets busy, remember that you deserve happiness and beautiful moments.
+        </p>
+
+        <p class="letter-line">
+            This little page is my way of reminding you of that.
+        </p>
+
+        <div class="final-heart">♡</div>
+
+        <p class="letter-line">
+            With warmth, always. ♡
+        </p>
+
+        <button class="music-btn" id="musicBtn">
+            ♫ Pause Music
+        </button>
+
+        <div class="signature">
+            GHOST PREDATOR × REDD X
+            <br>
+            MADE WITH CARE
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- BACKGROUND MUSIC -->
+<audio id="song" loop>
+    <source src="song.mp3" type="audio/mpeg">
+    Your browser does not support audio.
+</audio>
+
+
+<script>
+const landing = document.getElementById("landing");
+const mainPage = document.getElementById("mainPage");
+const welcomeBtn = document.getElementById("welcomeBtn");
+const song = document.getElementById("song");
+const musicBtn = document.getElementById("musicBtn");
+
+let musicPlaying = false;
+let currentSlide = 0;
+
+
+/* WELCOME BUTTON */
+welcomeBtn.addEventListener("click", async () => {
+
+    landing.classList.add("hide");
+
+    mainPage.classList.add("show");
+
+    revealLetter();
+
+    try {
+        await song.play();
+        musicPlaying = true;
+        musicBtn.textContent = "♫ Pause Music";
+    } catch (error) {
+        musicPlaying = false;
+        musicBtn.textContent = "♫ Play Music";
+    }
+
+});
+
+
+/* MUSIC PLAY / PAUSE */
+musicBtn.addEventListener("click", async () => {
+
+    if (musicPlaying) {
+        song.pause();
+        musicPlaying = false;
+        musicBtn.textContent = "♫ Play Music";
+    } else {
+        try {
+            await song.play();
+            musicPlaying = true;
+            musicBtn.textContent = "♫ Pause Music";
+        } catch (error) {
+            musicBtn.textContent = "♫ Play Music";
+        }
+    }
+
+});
+
+
+/* LETTER REVEAL */
+function revealLetter() {
+
+    const lines = document.querySelectorAll(".letter-line");
+    const heart = document.querySelector(".final-heart");
+
+    lines.forEach((line, index) => {
+
+        setTimeout(() => {
+            line.classList.add("visible");
+        }, 1800 * (index + 1));
+
+    });
+
+    setTimeout(() => {
+        heart.classList.add("visible");
+    }, 1800 * (lines.length + 1));
+
+}
+
+
+/* BACKGROUND SLIDESHOW */
+const slides = document.querySelectorAll(".background-slideshow img");
+
+function changeSlide() {
+
+    slides[currentSlide].classList.remove("active");
+
+    currentSlide++;
+
+    if (currentSlide >= slides.length) {
+        currentSlide = 0;
+    }
+
+    slides[currentSlide].classList.add("active");
+
+}
+
+setInterval(changeSlide, 5000);
+
+</script>
+
+</body>
+</html>
