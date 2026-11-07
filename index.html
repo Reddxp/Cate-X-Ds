@@ -178,16 +178,64 @@ body {
 }
 
 /* BOTTOM PHOTO GALLERY */
+/* MINI TV PHOTO FRAME */
 .photo-gallery {
+    width: 85%;
+    max-width: 380px;
+    margin: 30px auto 10px;
+    padding: 9px;
+    background: linear-gradient(145deg, #29202a, #080609);
+    border: 2px solid #b68b55;
+    border-radius: 18px;
+    box-shadow:
+        0 0 15px rgba(229,189,131,0.15),
+        inset 0 0 10px rgba(0,0,0,0.8);
+    position: relative;
+}
+
+.photo-gallery img {
+    display: none;
     width: 100%;
-    display: flex;
-    gap: 10px;
-    margin-top: 25px;
-    padding: 10px;
-    overflow: hidden;
-    border-radius: 15px;
-    background: rgba(0,0,0,0.35);
-    border: 1px solid rgba(229,189,131,0.25);
+    height: 190px;
+    object-fit: cover;
+    border-radius: 9px;
+}
+
+.photo-gallery img.active {
+    display: block;
+    animation: tvFade 1.5s ease;
+}
+
+@keyframes tvFade {
+    from {
+        opacity: 0;
+        transform: scale(1.03);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* TV LABEL */
+.photo-gallery::after {
+    content: "GHOST MEMORIES TV";
+    display: block;
+    text-align: center;
+    color: #d8a86d;
+    font-size: 9px;
+    letter-spacing: 3px;
+    padding-top: 9px;
+}
+
+@media (max-width: 480px) {
+    .photo-gallery {
+        width: 90%;
+    }
+
+    .photo-gallery img {
+        height: 155px;
+    }
 }
 
 .photo-gallery img {
