@@ -104,7 +104,6 @@ body {
 .main-page {
     min-height: 100vh;
     position: relative;
-    isolation: isolate;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,47 +111,18 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: opacity 1.5s ease;
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(70,25,48,0.35),
+            transparent 65%
+        ),
+        #080609;
 }
 
 .main-page.show {
     opacity: 1;
     visibility: visible;
-}
-
-/* FULL SCREEN SLIDESHOW */
-.background-slideshow {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    overflow: hidden;
-    background: #080609;
-}
-
-.background-slideshow img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.38);
-    opacity: 0;
-    transition: opacity 2s ease;
-}
-
-.background-slideshow img.active {
-    opacity: 1;
-}
-
-.background-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(
-        135deg,
-        rgba(15,5,12,0.55),
-        rgba(0,0,0,0.65)
-    );
-    pointer-events: none;
 }
 
 /* LOVE LETTER */
@@ -163,7 +133,7 @@ body {
     text-align: center;
     border: 1px solid rgba(255,220,190,0.25);
     border-radius: 22px;
-    background: rgba(20,12,18,0.48);
+    background: rgba(20,12,18,0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 10px 50px rgba(0,0,0,0.3);
@@ -192,6 +162,7 @@ body {
     transform: translateY(0);
 }
 
+/* FINAL HEART */
 .final-heart {
     opacity: 0;
     transform: scale(0.5);
@@ -206,6 +177,36 @@ body {
     transform: scale(1);
 }
 
+/* BOTTOM PHOTO GALLERY */
+.photo-gallery {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+    padding: 10px;
+    overflow: hidden;
+    border-radius: 15px;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(229,189,131,0.25);
+}
+
+.photo-gallery img {
+    width: calc(25% - 8px);
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+.photo-gallery img.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* SIGNATURE */
 .signature {
     margin-top: 30px;
     color: #e5bd83;
@@ -214,6 +215,7 @@ body {
     line-height: 2;
 }
 
+/* MUSIC BUTTON */
 .music-btn {
     margin-top: 25px;
     padding: 11px 22px;
@@ -230,7 +232,9 @@ body {
     background: rgba(229,189,131,0.2);
 }
 
+/* MOBILE RESPONSIVENESS */
 @media (max-width: 480px) {
+
     .love-card {
         padding: 28px 19px;
     }
@@ -238,6 +242,17 @@ body {
     .letter-line {
         font-size: 15px;
     }
+
+    .photo-gallery {
+        gap: 7px;
+        padding: 7px;
+    }
+
+    .photo-gallery img {
+        width: calc(25% - 6px);
+        height: 85px;
+    }
+
 }
 </style>
 </head>
@@ -253,12 +268,15 @@ body {
     </video>
 
     <div class="welcome-content">
+
         <h1>For Someone Special</h1>
+
         <p>A little surprise awaits you...</p>
 
         <button class="welcome-btn" id="welcomeBtn">
             WELCOME MY LOVE ♡
         </button>
+
     </div>
 
 </section>
@@ -267,20 +285,9 @@ body {
 <!-- MAIN EXPERIENCE -->
 <main class="main-page" id="mainPage">
 
-    <!-- BACKGROUND PHOTOS -->
-    <div class="background-slideshow">
-        <img src="photo1.jpg" class="active" alt="Memory 1">
-        <img src="photo2.jpg" alt="Memory 2">
-        <img src="photo3.jpg" alt="Memory 3">
-        <img src="photo4.jpg" alt="Memory 4">
-    </div>
-
-    <div class="background-overlay"></div>
-
-    <!-- LETTER -->
     <div class="love-card">
 
-        <h2>A Little Letter For You, Cate♡</h2>
+        <h2>A Little Letter For You ♡</h2>
 
         <p class="letter-line">
             Sometimes, the simplest moments become the most beautiful memories.
@@ -309,15 +316,27 @@ body {
         <div class="final-heart">♡</div>
 
         <p class="letter-line">
-            With warmth, always, Yours Only Juice. ♡
+            With warmth, always. ♡
         </p>
 
+        <!-- BOTTOM PHOTO SLIDESHOW -->
+        <div class="photo-gallery">
+
+            <img src="photo1.jpg" class="active" alt="Memory 1">
+            <img src="photo2.jpg" alt="Memory 2">
+            <img src="photo3.jpg" alt="Memory 3">
+            <img src="photo4.jpg" alt="Memory 4">
+
+        </div>
+
+        <!-- MUSIC BUTTON -->
         <button class="music-btn" id="musicBtn">
             ♫ Pause Music
         </button>
 
+        <!-- GHOST SIGNATURE -->
         <div class="signature">
-            Juice × Redd-X
+            GHOST PREDATOR × REDD X
             <br>
             MADE WITH CARE
         </div>
@@ -335,6 +354,7 @@ body {
 
 
 <script>
+
 const landing = document.getElementById("landing");
 const mainPage = document.getElementById("mainPage");
 const welcomeBtn = document.getElementById("welcomeBtn");
@@ -355,12 +375,19 @@ welcomeBtn.addEventListener("click", async () => {
     revealLetter();
 
     try {
+
         await song.play();
+
         musicPlaying = true;
+
         musicBtn.textContent = "♫ Pause Music";
+
     } catch (error) {
+
         musicPlaying = false;
+
         musicBtn.textContent = "♫ Play Music";
+
     }
 
 });
@@ -370,17 +397,29 @@ welcomeBtn.addEventListener("click", async () => {
 musicBtn.addEventListener("click", async () => {
 
     if (musicPlaying) {
+
         song.pause();
+
         musicPlaying = false;
+
         musicBtn.textContent = "♫ Play Music";
+
     } else {
+
         try {
+
             await song.play();
+
             musicPlaying = true;
+
             musicBtn.textContent = "♫ Pause Music";
+
         } catch (error) {
+
             musicBtn.textContent = "♫ Play Music";
+
         }
+
     }
 
 });
@@ -390,25 +429,30 @@ musicBtn.addEventListener("click", async () => {
 function revealLetter() {
 
     const lines = document.querySelectorAll(".letter-line");
+
     const heart = document.querySelector(".final-heart");
 
     lines.forEach((line, index) => {
 
         setTimeout(() => {
+
             line.classList.add("visible");
+
         }, 1800 * (index + 1));
 
     });
 
     setTimeout(() => {
+
         heart.classList.add("visible");
+
     }, 1800 * (lines.length + 1));
 
 }
 
 
-/* BACKGROUND SLIDESHOW */
-const slides = document.querySelectorAll(".background-slideshow img");
+/* BOTTOM PHOTO SLIDESHOW */
+const slides = document.querySelectorAll(".photo-gallery img");
 
 function changeSlide() {
 
@@ -424,7 +468,7 @@ function changeSlide() {
 
 }
 
-setInterval(changeSlide, 5000);
+setInterval(changeSlide, 3000);
 
 </script>
 
